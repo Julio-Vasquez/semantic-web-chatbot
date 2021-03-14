@@ -4,17 +4,26 @@ import { Loading } from "react-simple-chatbot";
 
 import { Result } from "./../Result";
 
-import { Encode } from './../../util/utilsQuery';
+import { Encode } from "./../../util/utilsQuery";
+import { GetComment } from "./../../util/utilArray";
+
+import "./ChatbotQuery.scss";
 
 export const ChatbotQuery = ({ steps, triggerNextStep }) => {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState("");
   const [trigger, setTrigger] = useState(false);
+  const [search, setSearch] = useState("");
+  const [uris, setUris] = useState("");
 
   useEffect(() => {
     const { value } = steps.search;
-    const param = value.charAt(0).toUpperCase().concat(value.slice(1));
-    console.log(param);
+    const param = value
+      .charAt(0)
+      .toUpperCase()
+      .concat(value.slice(1));
+    //console.log(param);
+    setSearch(param);
     const query = Encode(`
       select * where {
         ?x rdfs:label '${param}'@es .
@@ -26,38 +35,40 @@ export const ChatbotQuery = ({ steps, triggerNextStep }) => {
     const readyStateChange = (e) => {
       //console.log(e);
       if (e.currentTarget.readyState === 4) {
-        console.log(e.currentTarget);
+        //console.log(e.currentTarget);
         const data = JSON.parse(e.currentTarget.response);
-        console.log(data)
-        const { bindings } = data.results;
-        console.log(bindings)
-        if (bindings && bindings.length > 0) {
+        const comment = GetComment(data.results.bindings, setUris);
+        //console.log(bindings)
+        if (comment && comment.length > 0) {
           setLoading(false);
-          setResult(bindings[0].comment.value);
+          setResult(comment);
         } else {
           setLoading(false);
-          setResult("No hay Resultados.");
+          setResult("NO_DATA");
         }
       }
     };
 
     const queryUrl = `https://dbpedia.org/sparql/?default-graph-uri=&query=${query}&format=json`;
     const xhr = new XMLHttpRequest();
-    
+
     xhr.addEventListener("readystatechange", readyStateChange);
     xhr.open("GET", queryUrl);
     xhr.send();
-  }, [steps]);
+  }, [steps.search]);
 
-  //no funciona correctamente
   const triggetNext = () => {
-    setTrigger(true)
-    triggerNextStep()
+    setTrigger(true);
+    triggerNextStep();
   };
 
   return (
     <div className="dbpedia" itemScope itemType="https://dbpedia.org/sparql/">
-      {loading ? <Loading /> : <Result data={result} />}
+      {loading ? (
+        <Loading />
+      ) : (
+        <Result data={result} search={search} uris={uris} />
+      )}
       {!loading && (
         <div
           itemScope
@@ -67,7 +78,9 @@ export const ChatbotQuery = ({ steps, triggerNextStep }) => {
           }}
         >
           {!trigger && (
-            <button onClick={() => triggetNext()}>Buscar de nuevo</button>
+            <button className="btn_search" onClick={() => triggetNext()}>
+              Buscar de nuevo
+            </button>
           )}
         </div>
       )}

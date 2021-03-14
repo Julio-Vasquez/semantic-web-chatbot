@@ -1,0 +1,13 @@
+.btn_search {
+  border-radius: 25px;
+  height: 28px;
+  background-color: #f51;
+  color: white;
+  border-color: transparent;
+  &:hover {
+    background-color: white;
+    color: #f51;
+    border-color: #f51;
+    cursor: pointer;
+  }
+}

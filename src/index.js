@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from "styled-components";
 
 import App from "./App";
-import { ChatbotTheme } from './components/ChatbotTheme'
+import { ChatbotTheme } from "./components/ChatbotTheme";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
