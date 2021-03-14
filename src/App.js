@@ -1,9 +1,6 @@
 import React from "react";
+import { ChatbotProvider } from './components/ChatbotProvider'
 
-import { ChatbotSteps } from "./components/ChatbotSteps";
-
-function App() {
-  return <ChatbotSteps />;
-}
+const App = () => <ChatbotProvider />;
 
 export default App;

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Loading } from "react-simple-chatbot";
 
-import { Encode } from './../../util/utilsQuery'
 import { Result } from "./../Result";
+
+import { Encode } from './../../util/utilsQuery';
 
 export const ChatbotQuery = ({ steps, triggerNextStep }) => {
   const [loading, setLoading] = useState(true);
@@ -11,28 +12,25 @@ export const ChatbotQuery = ({ steps, triggerNextStep }) => {
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
-    const { search } = steps;
-    console.log(search);
+    const { value } = steps.search;
+    const param = value.charAt(0).toUpperCase().concat(value.slice(1));
+    console.log(param);
     const query = Encode(`
-    select * where {
-      ?x rdfs:label '${search.value}'@en .
-      ?x rdfs:comment ?comment .
-      FILTER (lang(?comment) = 'en')
-    } LIMIT 100 
-  `);
-    //FILTER (lang(?comment) = 'es')
-/*
-OPTIONAL {
-        ?x prov:wasDerivedFrom ?urlConsulta .
-      }
-*/
+      select * where {
+        ?x rdfs:label '${param}'@es .
+        ?x rdfs:comment ?comment .
+        FILTER (lang(?comment) = 'es')
+      } LIMIT 100 
+    `);
+
     const readyStateChange = (e) => {
-      console.log(e);
+      //console.log(e);
       if (e.currentTarget.readyState === 4) {
-        console.log(e.currentTarget.response);
+        console.log(e.currentTarget);
         const data = JSON.parse(e.currentTarget.response);
-        console.log(data);
-        const bindings = data.results.bindings;
+        console.log(data)
+        const { bindings } = data.results;
+        console.log(bindings)
         if (bindings && bindings.length > 0) {
           setLoading(false);
           setResult(bindings[0].comment.value);
@@ -42,8 +40,10 @@ OPTIONAL {
         }
       }
     };
+
     const queryUrl = `https://dbpedia.org/sparql/?default-graph-uri=&query=${query}&format=json`;
     const xhr = new XMLHttpRequest();
+    
     xhr.addEventListener("readystatechange", readyStateChange);
     xhr.open("GET", queryUrl);
     xhr.send();
@@ -51,9 +51,8 @@ OPTIONAL {
 
   //no funciona correctamente
   const triggetNext = () => {
-    setTrigger(true, () => {
-      triggerNextStep();
-    });
+    setTrigger(true)
+    triggerNextStep()
   };
 
   return (

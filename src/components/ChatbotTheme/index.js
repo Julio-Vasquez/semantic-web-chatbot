@@ -1,1 +1,1 @@
-export { Chatbot } from './ChatbotTheme'
+export { ChatbotTheme } from './ChatbotTheme'
