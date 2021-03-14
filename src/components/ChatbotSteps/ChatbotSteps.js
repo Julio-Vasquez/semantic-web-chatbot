@@ -8,7 +8,7 @@ export const ChatbotSteps = [
   },
   {
     id: "2",
-    message: "Busca algo en Wikipédia. (Example: Colombia)",
+    message: "Busca algo en Wikipédia. (Ejemplo: Colombia)",
     trigger: "search",
   },
   {

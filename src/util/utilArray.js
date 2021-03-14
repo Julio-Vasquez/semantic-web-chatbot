@@ -1,15 +1,19 @@
-export const GetComment = (str, setUri) => {
+export const GetComment = (str, setUri, setFlag) => {
   const content = [],
-    uri = [];
+    uri = [],
+    flags = [];
   str.forEach((element) => {
-    let {
+    const {
       x,
+      flag,
       comment: { value },
     } = element;
     uri.push(x.value);
     content.push(value);
+    flags.push(flag.value);
   });
   setUri([...new Set(uri)]);
+  setFlag([...new Set(flags)]);
   return [...new Set(content)];
 };
 //[0] data [1] uri

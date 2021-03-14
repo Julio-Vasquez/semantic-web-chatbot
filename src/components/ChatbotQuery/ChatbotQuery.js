@@ -6,7 +6,6 @@ import { Result } from "./../Result";
 
 import { Encode } from "./../../util/utilsQuery";
 import { GetComment } from "./../../util/utilArray";
-
 import "./ChatbotQuery.scss";
 
 export const ChatbotQuery = ({ steps, triggerNextStep }) => {
@@ -15,30 +14,34 @@ export const ChatbotQuery = ({ steps, triggerNextStep }) => {
   const [trigger, setTrigger] = useState(false);
   const [search, setSearch] = useState("");
   const [uris, setUris] = useState("");
+  const [flags, setFlags] = useState("");
 
   useEffect(() => {
     const { value } = steps.search;
     const param = value
       .charAt(0)
       .toUpperCase()
-      .concat(value.slice(1));
-    //console.log(param);
+      .concat(value.toLowerCase().slice(1));
+
     setSearch(param);
+
     const query = Encode(`
       select * where {
         ?x rdfs:label '${param}'@es .
         ?x rdfs:comment ?comment .
-        FILTER (lang(?comment) = 'es')
+        optional { ?x foaf:depiction ?flag } .
+        FILTER ( lang(?comment) = 'es') .
       } LIMIT 100 
     `);
+    /*const query = Encode(`select * where{?s a owl:Class optional {?s rdfs:subClassOf	?subOf }}order by asc(?s)`);*/
 
     const readyStateChange = (e) => {
       //console.log(e);
       if (e.currentTarget.readyState === 4) {
         //console.log(e.currentTarget);
         const data = JSON.parse(e.currentTarget.response);
-        const comment = GetComment(data.results.bindings, setUris);
-        //console.log(bindings)
+        console.log(data);
+        const comment = GetComment(data.results.bindings, setUris, setFlags);
         if (comment && comment.length > 0) {
           setLoading(false);
           setResult(comment);
@@ -63,11 +66,15 @@ export const ChatbotQuery = ({ steps, triggerNextStep }) => {
   };
 
   return (
-    <div className="dbpedia" itemScope itemType="https://dbpedia.org/sparql/">
+    <div
+      className="dbpediaResult"
+      itemScope
+      itemType="https://dbpedia.org/sparql/"
+    >
       {loading ? (
         <Loading />
       ) : (
-        <Result data={result} search={search} uris={uris} />
+        <Result data={result} search={search} uris={uris} flags={flags} />
       )}
       {!loading && (
         <div
@@ -78,7 +85,11 @@ export const ChatbotQuery = ({ steps, triggerNextStep }) => {
           }}
         >
           {!trigger && (
-            <button className="btn_search" onClick={() => triggetNext()}>
+            <button
+              itemProp="buttonNewSearch"
+              className="btn_search"
+              onClick={() => triggetNext()}
+            >
               Buscar de nuevo
             </button>
           )}

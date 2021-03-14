@@ -7,7 +7,7 @@ let mainWindow;
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 350,
-    height: 590,
+    height: 580,
     icon: __dirname + "./favicon.ico",
     resizable: false,
     webPreferences: {
@@ -23,7 +23,6 @@ function createWindow() {
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
-  mainWindow.webContents.openDevTools();
   mainWindow.on("closed", () => (mainWindow = null));
 }
 

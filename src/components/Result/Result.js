@@ -5,9 +5,10 @@ import empty from "./../../assets/img/empty.png";
 
 import "./Result.scss";
 
-export const Result = ({ data, search, uris }) => {
+export const Result = ({ data, search, uris, flags }) => {
   console.log(data);
   console.log(uris);
+  console.log(flags);
   return !data || data === "NO_DATA" ? (
     <div itemScope itemType="https://schema.org/Result" className="result">
       <img
@@ -50,6 +51,16 @@ export const Result = ({ data, search, uris }) => {
         >
           {item}
         </p>
+      ))}
+
+      {flags.map((item, key) => (
+        <img
+          src={item}
+          alt={`uri-${key}`}
+          className="result_image_flag"
+          itemProp="resultSuccessFlags"
+          key={`uri-${key}`}
+        />
       ))}
     </div>
   );
