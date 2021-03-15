@@ -29,7 +29,8 @@
     "start-electron-win": "set BROWSER=none && react-scripts start",
     "electron-dev": "concurrently \"npm run start-electron-os\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-dev-win": "concurrently \"npm run start-electron-win\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-build": "electron-builder"
+    "electron-build": "electron-builder",
+    "electron-build-mac": "electron-builder  -mwl"
   },
   "eslintConfig": {
     "extends": [
