@@ -1,9 +1,9 @@
 {
   "name": "semantic-web-chatbot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
-  "author": "DarKPhuRioN",
-  "description": "semantic web",
+  "author": "Julio Alfredo Vásquez Lievano (DarKPhuRioN)",
+  "description": "chatbot using semantic web and sparql",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -58,7 +58,7 @@
   "build": {
     "appId": "chatbotid",
     "win": {
-      "icon": "ico/icon.ico"
+      "icon": "build/favicon.ico"
     },
     "directories": {
       "buildResources": "public"
