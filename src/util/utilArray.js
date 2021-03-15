@@ -14,6 +14,6 @@ export const GetComment = (str, setUri, setFlag) => {
   });
   setUri([...new Set(uri)]);
   setFlag([...new Set(flags)]);
-  return [...new Set(content)];
+  return [...new Set(content.reverse())];
 };
 //[0] data [1] uri

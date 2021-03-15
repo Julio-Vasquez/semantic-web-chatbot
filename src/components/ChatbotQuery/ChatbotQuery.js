@@ -24,7 +24,8 @@ export const ChatbotQuery = ({ steps, triggerNextStep }) => {
       .concat(value.toLowerCase().slice(1));
 
     setSearch(param);
-
+    //|| lang(?comment) = 'en'
+    //Perú
     const query = Encode(`
       select * where {
         ?x rdfs:label '${param}'@es .

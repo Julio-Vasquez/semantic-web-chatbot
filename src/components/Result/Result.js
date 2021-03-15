@@ -38,7 +38,7 @@ export const Result = ({ data, search, uris, flags }) => {
       </h4>
 
       {data.map((item, key) => (
-        <p className="result_text" itemProp="resultSuccess" key={key}>
+        <p className="result_text" itemProp="resultSuccessAbstract" key={key}>
           {item}
         </p>
       ))}
